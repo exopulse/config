@@ -85,6 +85,24 @@ func Test_discoverArgumentValue(t *testing.T) {
 				defaultValue: "default.ini"},
 			want:    "default.ini",
 			wantErr: false},
+		{
+			name: "duplicate_mix",
+			args: args{
+				args:         []string{"-k -c short.ini --config long.ini"},
+				longName:     "config",
+				shortName:    "c",
+				defaultValue: "default.ini"},
+			want:    "default.ini",
+			wantErr: true},
+		{
+			name: "duplicate_short",
+			args: args{
+				args:         []string{"-k -c short.ini -f -c short2.ini"},
+				longName:     "config",
+				shortName:    "c",
+				defaultValue: "default.ini"},
+			want:    "default.ini",
+			wantErr: true},
 	}
 
 	for _, tt := range tests {

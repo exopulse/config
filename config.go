@@ -5,6 +5,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"exobyte.org/pulse/files"
 	"github.com/kballard/go-shellquote"
 )
@@ -45,12 +47,18 @@ func discoverArgumentValue(args []string, longName string, shortName string, def
 		return "", err
 	}
 
+	v := ""
+
 	if longName != "" {
 		target := "--" + longName
 
 		for i, p := range args {
 			if p == target && i+1 < len(args) {
-				return args[i+1], nil
+				if v != "" {
+					return defaultValue, errors.New("duplicate flag value for " + target)
+				}
+
+				v = args[i+1]
 			}
 		}
 	}
@@ -60,12 +68,20 @@ func discoverArgumentValue(args []string, longName string, shortName string, def
 
 		for i, p := range args {
 			if p == target && i+1 < len(args) {
-				return args[i+1], nil
+				if v != "" {
+					return defaultValue, errors.New("duplicate flag value for " + target)
+				}
+
+				v = args[i+1]
 			}
 		}
 	}
 
-	return defaultValue, nil
+	if v == "" {
+		v = defaultValue
+	}
+
+	return v, nil
 }
 
 // readNormalizedArgs reads arguments from specified file. Slice returned contains normalized arguments.
