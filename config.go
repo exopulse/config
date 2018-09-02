@@ -45,7 +45,7 @@ func discoverArgumentValue(args []string, longName string, shortName string, def
 		return "", err
 	}
 
-	if shortName != "" {
+	if longName != "" {
 		target := "--" + longName
 
 		for i, p := range args {
