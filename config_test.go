@@ -86,6 +86,24 @@ func Test_discoverArgumentValue(t *testing.T) {
 			want:    "default.ini",
 			wantErr: false},
 		{
+			name: "default_stop",
+			args: args{
+				args:         []string{"-k -f -- files.txt"},
+				longName:     "config",
+				shortName:    "c",
+				defaultValue: "default.ini"},
+			want:    "default.ini",
+			wantErr: false},
+		{
+			name: "default_stop_no_long",
+			args: args{
+				args:         []string{"-k -f -- files.txt"},
+				longName:     "",
+				shortName:    "c",
+				defaultValue: "default.ini"},
+			want:    "default.ini",
+			wantErr: false},
+		{
 			name: "duplicate_mix",
 			args: args{
 				args:         []string{"-k -c short.ini --config long.ini"},

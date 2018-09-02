@@ -49,31 +49,18 @@ func discoverArgumentValue(args []string, longName string, shortName string, def
 
 	v := ""
 
-	if longName != "" {
-		target := "--" + longName
+	shortTarget := "-" + shortName
+	longTarget := "--" + longName
+	incShort := len(shortName) > 0
+	incLong := len(longName) > 0
 
-		for i, p := range args {
-			if p == target && i+1 < len(args) {
-				if v != "" {
-					return defaultValue, errors.New("duplicate flag value for " + target)
-				}
-
-				v = args[i+1]
+	for i, p := range args {
+		if ((incShort && p == shortTarget) || (incLong && p == longTarget)) && i+1 < len(args) {
+			if v != "" {
+				return defaultValue, errors.Errorf("duplicate flag value for %s/%s", longName, shortName)
 			}
-		}
-	}
 
-	if shortName != "" {
-		target := "-" + shortName
-
-		for i, p := range args {
-			if p == target && i+1 < len(args) {
-				if v != "" {
-					return defaultValue, errors.New("duplicate flag value for " + target)
-				}
-
-				v = args[i+1]
-			}
+			v = args[i+1]
 		}
 	}
 
