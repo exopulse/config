@@ -2,12 +2,12 @@
 package config
 
 import (
+	"github.com/exopulse/files"
 	"os"
 	"strings"
 
 	"github.com/pkg/errors"
 
-	"exobyte.org/pulse/files"
 	"github.com/kballard/go-shellquote"
 )
 
