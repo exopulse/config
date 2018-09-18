@@ -38,6 +38,18 @@ func SplitArgs(args []string) ([]string, error) {
 	return s, nil
 }
 
+// ReadArgumentsFromConfigFileArg discovers config file argument, reads discovered config file and returns normalized
+// arguments.
+func ReadArgumentsFromConfigFileArg(longName string, shortName string, defaultConfigFile string) ([]string, error) {
+	cf, err := discoverArgumentValue(os.Args[1:], longName, shortName, defaultConfigFile)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return readNormalizedArgs(cf)
+}
+
 // discoverArgumentValue discovers argument value. Argument can be specified using any or both of the long and short
 // name variant.
 func discoverArgumentValue(args []string, longName string, shortName string, defaultValue string) (string, error) {
@@ -90,16 +102,4 @@ func readNormalizedArgs(file string) ([]string, error) {
 	}
 
 	return args, nil
-}
-
-// ReadArgumentsFromConfigFileArg discovers config file argument, reads discovered config file and returns normalized
-// arguments.
-func ReadArgumentsFromConfigFileArg(longName string, shortName string, defaultConfigFile string) ([]string, error) {
-	cf, err := discoverArgumentValue(os.Args[1:], longName, shortName, defaultConfigFile)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return readNormalizedArgs(cf)
 }
